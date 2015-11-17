@@ -1,11 +1,21 @@
 app.config(function ($routeProvider) {
     $routeProvider
 
-        .when('/route', {
-            templateUrl: 'app/components/RouteView/routeview.partial.html',
-            controller: 'routeViewController'
+        .when('/advanced', {
+            templateUrl: 'app/components/advanced/advancedview.partial.html',
+            controller: 'advancedController'
         })
 
-        .otherwise('/');
+        .when('/basic', {
+            templateUrl: 'app/components/basic/basicview.partial.html',
+            controller: 'basicController'
+        })
+
+        .when('/help', {
+            templateUrl: 'app/components/help/help.partial.html',
+            controller: 'helpController'
+        })
+
+        .otherwise('/basic');
 
 });

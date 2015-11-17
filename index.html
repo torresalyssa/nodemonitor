@@ -5,10 +5,15 @@
 
     <script>
         var fs = require('fs-extra');
+        var json = require('jsonfile');
+        var util = require('util');
     </script>
 
     <script src="assets/bower_components/angular/angular.min.js"></script>
     <script src="assets/bower_components/angular-route/angular-route.min.js"></script>
+    <script src="assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="assets/bower_components/Chart.js/Chart.js"></script>
+    <script src="assets/bower_components/angular-chart.js/angular-chart.js"></script>
     <script src="assets/bower_components/lodash/lodash.js"></script>
 
     <!-- App Main and AngularJS Routes -->
@@ -17,26 +22,54 @@
 
     <!-- Controllers -->
     <script src="app/shared/RootController.js"></script>
+    <script src="app/components/advanced/AdvancedController.js"></script>
+    <script src="app/components/basic/BasicController.js"></script>
+    <script src="app/components/help/HelpController.js"></script>
 
     <!-- Services -->
 
     <!-- Directives -->
 
     <!-- Stylesheets -->
+    <link href="assets/css/bootstrap.sh.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/bower_components/angular-chart.js/dist/angular-chart.css" rel="stylesheet">
 
     <title>Node Monitoring App with PM2</title>
 </head>
 
 <body ng-controller="rootController" ng-cloak>
 
-    <h1>{{msg}}</h1>
+    <nav class="navbar navbar-default" role="navigation">
 
-    <h2>Processes</h2>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-click="navbarCollapsed = !navbarCollapsed">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                Node App Monitor
+            </a>
+        </div>
 
-    <div ng-repeat="process in processes track by process.pid">
-        {{process.name}}&nbsp;&nbsp;&nbsp;{{process.pid}}&nbsp;&nbsp;&nbsp;{{process.pm2_env.status}}
-    </div>
+        <div class="collapse navbar-collapse" collapse="navbarCollapsed">
+            <div class="btn-group pull-right" dropdown is-open="status.isopen">
+                <button id="single-button" type="button" class="btn btn-primary" dropdown-toggle>
+                    &nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+                    <li role="menuitem"><a href="#/basic">Basic Monitoring</a></li>
+                    <li role="menuitem"><a href="#/advanced">Advanced Monitoring</a></li>
+                    <li class="divider"></li>
+                    <li role="menuitem"><a href="#/help">Help</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div ng-view></div>
 
 </body>
 </html>

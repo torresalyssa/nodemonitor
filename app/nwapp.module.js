@@ -1,24 +1,18 @@
-var app = angular.module('nwApp', ['ngRoute']);
+var app = angular.module('nwApp', ['ngRoute', 'ui.bootstrap', 'chart.js']);
 
-app.run(function ($rootScope ,$http, $log) {
-    $rootScope.msg = "Monitoring Node server running PM2...";
+app.run(function ($rootScope) {
 
-    $rootScope.processes = [];
+    json.readFile("./config.json", function(err, obj) {
 
-    $http.get("http://localhost:9615")
+        if (err) {
+            $log.error("Error reading config.json.");
+        }
 
-        .then(function(data) {
-            $log.info(data.data);
-            dispData(data.data);
-        })
+        else {
+            $rootScope.ping_endpt = obj.ping_endpt;
+            $rootScope.pm2_endpt = obj.pm2_endpt;
+            $rootScope.github_path = obj.github_path;
+        }
+    });
 
-        .catch(function(err) {
-            $log.error("Unable to get monitoring info: " + err);
-            $rootScope.msg = "Unable to get monitoring information. "
-                + "Check that your app is running with PM2 and you have run 'pm2 web' to start reporting data."
-        });
-
-    function dispData(data) {
-        $rootScope.processes = data.processes;
-    }
 });
