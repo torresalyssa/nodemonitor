@@ -1,0 +1,5 @@
+{
+  "ping_endpt": "http://localhost:8000/ping",
+  "pm2_endpt": "http://localhost:9615",
+  "github_path": ""
+}

@@ -1,0 +1,15 @@
+{
+  "main": "index.html",
+  "name": "NWApp",
+  "version": "0.0.1",
+  "description": "node webkit practice app",
+  "nodejs": true,
+  "window": {
+    "title": "NWApp",
+    "width": 1300,
+    "height": 700
+  },
+  "dependencies": {
+    "fs-extra": "^0.24.0"
+  }
+}
