@@ -1,5 +1,7 @@
 {
   "ping_endpt": "http://localhost:8000/ping",
+  "project_name": "SSTUBBY",
   "pm2_endpt": "http://localhost:9615",
-  "github_path": ""
+  "project_path": "~/Documents/sstubby",
+  "main_project_file": "server.js"
 }

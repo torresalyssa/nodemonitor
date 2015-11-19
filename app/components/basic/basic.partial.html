@@ -1,0 +1,49 @@
+<div class="container-fluid" ng-cloak>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-3"></div>
+
+            <div class="col-md-6" ng-show="ready">
+
+                <h1>Basic Dashboard</h1><br>
+
+                <span class="align-left">
+                    <i class="glyphicon"
+                       ng-class="{'glyphicon-ok-circle':app.running, 'glyphicon-remove-circle':!app.running}"></i>
+
+                    <h2 style="display:inline">&nbsp;&nbsp;{{app.name}}&nbsp;&nbsp;&nbsp;</h2>
+                </span>
+                <span class="align-right">
+                    <span ng-show="!app.processing">
+                        <i class="glyphicon glyphicon-play action-icon" ng-click="appStart()"
+                           ng-show="!app.running"></i>&nbsp;
+                        <i class="glyphicon glyphicon-ban-circle action-icon" ng-click="appStop()"
+                           ng-show="app.running"></i>&nbsp;
+                        <i class="glyphicon glyphicon-refresh action-icon" ng-click="appRestart()"
+                           ng-show="app.running"></i>&nbsp;
+                    </span>
+
+                    <img style="position:relative; top:-5px; left: -5px;" height="20" width="20"
+                         ng-show="app.processing" src="assets/img/spinner.gif">
+                </span>
+                <br><br>
+                <span ng-show="app.running" style="color:darkgrey">
+                    CPU: {{data.monit.cpu[0].model}}<br>
+                    Memory used: {{(data.monit.total_mem - data.monit.free_mem)/data.monit.total_mem * 100 | number:1}}%<br>
+                </span>
+
+                <br><br>
+
+                <i class="glyphicon"
+                   ng-class="{'glyphicon-ok-circle':pm2.running, 'glyphicon-remove-circle':!pm2.running}"></i>
+
+                <h2 style="display:inline">&nbsp;&nbsp;{{app.name}}&nbsp;Watchdog&nbsp;&nbsp;&nbsp;</h2>
+
+            </div>
+
+            <div class="col-md-3"></div>
+
+        </div>
+    </div>
+</div>

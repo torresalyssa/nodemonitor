@@ -7,6 +7,8 @@
         var fs = require('fs-extra');
         var json = require('jsonfile');
         var util = require('util');
+        var exec = require('child_process').exec;
+        var execSync = require('child_process').execSync;
     </script>
 
     <script src="assets/bower_components/angular/angular.min.js"></script>
@@ -24,6 +26,7 @@
     <script src="app/shared/RootController.js"></script>
     <script src="app/components/advanced/AdvancedController.js"></script>
     <script src="app/components/basic/BasicController.js"></script>
+    <script src="app/components/update/UpdateController.js"></script>
     <script src="app/components/help/HelpController.js"></script>
 
     <!-- Services -->
@@ -57,12 +60,13 @@
         <div class="collapse navbar-collapse" collapse="navbarCollapsed">
             <div class="btn-group pull-right" dropdown is-open="status.isopen">
                 <button id="single-button" type="button" class="btn btn-primary" dropdown-toggle>
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
                     &nbsp;<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-                    <li role="menuitem"><a href="#/basic">Basic Monitoring</a></li>
-                    <li role="menuitem"><a href="#/advanced">Advanced Monitoring</a></li>
-                    <li class="divider"></li>
+                    <li role="menuitem"><a href="#/basic">Basic Dashboard</a></li>
+                    <li role="menuitem"><a href="#/advanced">Advanced Dashboard</a></li>
+                    <li role="menuitem"><a href="#/update">Update</a></li>
                     <li role="menuitem"><a href="#/help">Help</a></li>
                 </ul>
             </div>

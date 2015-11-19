@@ -6,6 +6,95 @@
 
             <div class="col-md-8">
                 <h1>Help</h1>
+
+                <h3>Icons</h3>
+
+                <i style="font-size:18px;" class="glyphicon glyphicon-ok-circle"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Running<br><br>
+                <i style="font-size:18px;" class="glyphicon glyphicon-remove-circle"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Not running<br><br>
+                <i class="glyphicon glyphicon-play action-icon"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Click to start<br><br>
+                <i class="glyphicon glyphicon-ban-circle action-icon"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Click to stop<br><br>
+                <i class="glyphicon glyphicon-refresh action-icon"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Click to restart<br><br>
+
+                <h3>Basic Dashboard</h3>
+                <p>
+                    The first item listed on the basic dashboard indicates your project and its status (running or
+                    not running). When your project is not running, you can try to start it by clicking the start
+                    icon. When your project is running, you can stop it or restart it by clicking the icons
+                    corresponding to those actions.
+                </p>
+                <p>
+                    The second item listed on the basic dashboard represents the watchdog (PM2) that is monitoring your
+                    app. The icon to the left indicates whether or not the watchdog is active (whether or not PM2 is
+                    reporting monitoring information to the PM2 endpoint given in the <tt>config.json</tt> file).
+                </p>
+
+                <br>
+
+                <h3>Advanced Dashboard</h3>
+                <p>
+                    The advanced dashboard allows you to view more detailed information on the status of your app,
+                    including a list of all running processes, the ability to start/stop/reset any process, and CPU
+                    and memory usage information.
+                </p>
+
+                <br>
+
+                <h3>Update</h3>
+                <p>
+                    Click the Check for Updates button to see if your git project is up-to-date.
+                    Click the update button to update your local version of the git project located at the git project
+                    path (<tt>git_path</tt>) given in the <tt>config.json</tt> file. The update process will pull the
+                    latest version of the project and run  <tt>npm update</tt>'s and  <tt>bower update</tt>'s as needed.
+                </p>
+
+                <br>
+
+                <h3>Configuration File (<tt>config.json</tt>)</h3>
+
+                <tt>ping_endpt</tt>:&nbsp;&nbsp;Endpoint for your project. Used to ping and determine if the
+                project is running.<br>
+
+                <tt>project_name</tt>:&nbsp;&nbsp;The name of your project.<br>
+
+                <tt>pm2_endpt</tt>:&nbsp;&nbsp;Where PM2 is reporting its monitoring information to.<br>
+
+                <tt>project_path</tt>:&nbsp;&nbsp;Local path to your project.<br>
+
+                <tt>main_project_file</tt>:&nbsp;&nbsp;File to be started via <tt>pm2 start</tt> in order to
+                run your project. Must be located in the root project directory given by <tt>project_path</tt>.
+
+                <br><br>
+
+
+                <h3>Troubleshooting</h3>
+                <p>
+                    <b>Issue:</b>&nbsp;The watchdog is indicating that it is not running.<br>
+                    <b>Solution:</b>&nbsp;This could mean that you did not tell PM2 to start reporting data to the PM2
+                    endpoint. Do this by typing the command <tt>pm2 web</tt> into your terminal. Another reason the
+                    watchdog could not be running is that you have the wrong PM2 endpoint in your <tt>config.json</tt>
+                    file. Check this by making sure that the port number output by PM2 when you run <tt>pm2 web</tt>
+                    matches that given in your <tt>config.json</tt> under <tt>pm2_endpt</tt>.
+                </p>
+                <p>
+                    <b>Issue:</b>&nbsp;The watchdog is indicating that it is running, but my app is indicating it is not.<br>
+                    <b>Solution:</b>&nbsp;This means that you have PM2 running a different app and reporting monitoring
+                    information on that app to the PM2 endpoint. To fix this, run <tt>pm2 kill</tt> in your
+                    terminal, navigate to your project's main <tt>.js</tt> file, run <tt>pm2 start [main app file]</tt>, and
+                    finally run <tt>pm2 web</tt> to have PM2 start reporting to the PM2 endpoint.
+                </p>
+
+
+                <br><br><br>
             </div>
 
             <div class="col-md-2"></div>

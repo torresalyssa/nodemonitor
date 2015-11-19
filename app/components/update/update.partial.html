@@ -1,0 +1,42 @@
+<div class="container-fluid" ng-cloak>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+
+                <h1>Update</h1><br>
+
+                <div class="button-group">
+                    <button class="btn btn-default btn-lg" type="button" ng-click="checkUpToDate()" ng-disabled="!projectPath || checking || updating || !upToDate">Check for Updates</button>
+                    &nbsp;&nbsp;&nbsp;<img src="assets/img/spinner.gif" ng-show="checking">
+                    <span ng-show="checkMsg">
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="glyphicon"
+                           ng-class="{'glyphicon-ok':checkOk, 'glyphicon-remove':!checkOk}"></i>
+                        &nbsp;&nbsp;{{checkMsg}}
+                    </span>
+
+                    <br><br>
+
+                    <button class="btn btn-default btn-lg" type="button" ng-click="updateRepo()" ng-disabled="upToDate || updating">Install Updates</button>
+                    &nbsp;&nbsp;&nbsp;<img src="assets/img/spinner.gif" ng-show="updating">
+                    <span ng-show="updateMsg">
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="glyphicon"
+                           ng-class="{'glyphicon-ok':updateOk, 'glyphicon-remove':!updateOk}"></i>
+                        &nbsp;&nbsp;{{updateMsg}}
+                    </span>
+                    <br><br><br>
+                    <p>{{bowerError}}</p>
+                    <p>{{npmError}}</p>
+                </div>
+
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+    </div>
+</div>

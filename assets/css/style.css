@@ -5,6 +5,42 @@ html, body {
     padding: 0;
 }
 
+li {
+    padding-bottom: 10px;
+}
+
+p {
+    text-align: justify;
+}
+
 .form-inline > * {
    margin:5px 3px;
+}
+
+.glyphicon-ok-circle {
+    font-size: 25px;
+    color: #00bb00;
+}
+
+.glyphicon-remove-circle {
+    font-size: 25px;
+    color: red;
+}
+
+.action-icon {
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    color: darkgrey;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.align-left {
+    float: left;
+}
+.align-right {
+    float: right;
+    padding-right: 160px;
+    padding-top: 12px;
 }
