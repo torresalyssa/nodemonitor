@@ -70,7 +70,7 @@ app.controller("updateController", function ($scope, $rootScope, $log, $timeout)
         $log.info("Checking " + $scope.projectPath);
 
 
-        exec('cd ' + $scope.projectPath + " && git fetch", function (error) {
+        exec('cd ' + $scope.projectPath + " && git fetch", function (error, stdout) {
 
             if (error != null) {
                 $timeout(function() {
@@ -87,10 +87,11 @@ app.controller("updateController", function ($scope, $rootScope, $log, $timeout)
                     if (error != null) {
                         $log.error('ERROR in exec (git rev-parse @): ' + error);
                     }
+
                     else {
                         local = stdout;
 
-                        exec('cd ' + $scope.projectPath + ' && git rev-parse @', function (error, stdout) {
+                        exec('cd ' + $scope.projectPath + ' && git rev-parse @{u}', function (error, stdout) {
 
                             if (error != null) {
                                 $log.error('ERROR in exec (git rev-parse @{u}): ' + error);
