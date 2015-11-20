@@ -70,7 +70,7 @@ app.controller("updateController", function ($scope, $rootScope, $log, $timeout)
         $log.info("Checking " + $scope.projectPath);
 
 
-        exec('cd ' + $scope.projectPath + " && git fetch", function (error, stdout) {
+        exec('cd ' + $scope.projectPath + " && git fetch", function (error) {
 
             if (error != null) {
                 $timeout(function() {
