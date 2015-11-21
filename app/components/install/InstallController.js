@@ -103,12 +103,8 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
 
                     else {
                         dir += dir.slice(-1) == slash ? '' : slash;
-                        //TODO: fix this
-                        var i = -1;
-                        var repo_dir = $rootScope.git_repo
-                        while (i >= -$rootScope.git_repo.length
-                               && $rootScope.git_repo.slice(i)[0] != slash)
-                        $rootScope.project_path = dir + $rootScope.git_repo.substr(i);
+                        //TODO: set this correctly
+                        $rootScope.project_path = dir;
 
                         $log.info($rootScope.project_path);
 
