@@ -21,6 +21,11 @@ app.config(function ($routeProvider) {
             controller: 'helpController'
         })
 
+        .when('/install', {
+            templateUrl: 'app/components/install/install.partial.html',
+            controller: 'installController'
+        })
+
         .otherwise('/basic');
 
 });

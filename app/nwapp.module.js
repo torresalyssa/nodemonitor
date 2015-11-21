@@ -1,4 +1,4 @@
-var app = angular.module('nwApp', ['ngRoute', 'ui.bootstrap', 'chart.js']);
+var app = angular.module('nwApp', ['ngRoute', 'ui.bootstrap', 'chart.js', 'fileDialogService']);
 
 app.run(function ($rootScope) {
 
@@ -18,6 +18,7 @@ app.run(function ($rootScope) {
             $rootScope.project_path = obj.project_path;
             $rootScope.project_path += $rootScope.project_path.slice(-1) == slash ? '' : slash;
             $rootScope.main_project_file = obj.main_project_file;
+            $rootScope.git_repo = obj.git_repo;
         }
     });
 

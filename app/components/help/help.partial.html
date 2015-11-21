@@ -25,6 +25,19 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 Click to restart<br><br>
 
+                <h3>Install</h3>
+                <p>
+                    This will check whether or not you have PM2 (the tool used to report monitoring
+                    information on your project) installed. If it is not detected on your computer,
+                    a button will show up that you can click to install PM2, which is necessary for
+                    this app to be able to supply you with monitoring information. Additionally, this page will offer to install your project from git if there is
+                    no local install. <br><br>
+                    If you get an error message while trying to install PM2, make sure that you have
+                    permission to install programs globally on your computer.
+                </p>
+
+                <br>
+
                 <h3>Basic Dashboard</h3>
                 <p>
                     The first item listed on the basic dashboard indicates your project and its status (running or
@@ -53,7 +66,7 @@
                 <p>
                     Click the Check for Updates button to see if your git project is up-to-date.
                     Click the update button to update your local version of the git project located at the git project
-                    path (<tt>git_path</tt>) given in the <tt>config.json</tt> file. The update process will pull the
+                    path (<tt>project_path</tt>) given in the <tt>config.json</tt> file. The update process will pull the
                     latest version of the project and run  <tt>npm update</tt>'s and  <tt>bower update</tt>'s as needed.
                 </p>
 
@@ -72,6 +85,9 @@
 
                 <tt>main_project_file</tt>:&nbsp;&nbsp;File to be started via <tt>pm2 start</tt> in order to
                 run your project. Must be located in the root project directory given by <tt>project_path</tt>.
+
+                <tt>git_repo</tt>:&nbsp;&nbsp;The location of the git repository for this project. Used to install
+                the project if there is no local install, i.e. there is no <tt>project_path</tt>.
 
                 <br><br>
 
