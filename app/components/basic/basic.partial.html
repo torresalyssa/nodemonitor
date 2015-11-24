@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-cloak>
+<div class="container-fluid" ng-cloak ng-show="$root.configLoaded">
     <div class="row">
         <div class="col-md-12">
 
@@ -42,7 +42,39 @@
 
             </div>
 
+            <div class="col-md-6" ng-show="!ready">
+
+                <h1>Basic Dashboard</h1><br>
+
+                <h3>{{errMsg}}</h3>
+
+            </div>
+
             <div class="col-md-3"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid" ng-cloak ng-show="!$root.configLoaded">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+
+                <h1>Basic Dashboard</h1><br>
+
+                <h4>
+                    {{$root.configMsg}}&nbsp;&nbsp;&nbsp;
+                    <img ng-show="!$root.configErr" src="assets/img/spinner.gif">
+                </h4>
+
+            </div>
+
+            <div class="col-md-2"></div>
 
         </div>
     </div>

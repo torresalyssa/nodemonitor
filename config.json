@@ -3,6 +3,6 @@
   "project_name": "SSTUBBY",
   "pm2_endpt": "http://localhost:9615",
   "project_path": "~/Documents/sstubby",
-  "git_repo": "https://github.com/scottmatheson/sstubby.git",
-  "main_project_file": "server.js"
+  "main_project_file": "server.js",
+  "git_repo": "https://github.com/scottmatheson/sstubby.git"
 }

@@ -1,6 +1,7 @@
 app.controller("basicController", function ($scope, $rootScope, $log, $http, $interval, $q, $timeout) {
 
     $scope.ready = false;
+    $scope.errMsg = "";
 
     $scope.app = {
         "running": false,
@@ -53,13 +54,13 @@ app.controller("basicController", function ($scope, $rootScope, $log, $http, $in
 
             .then(function() {
                 /* put in timeout to allow for pm2 to restart, is there a better way? */
-                $timeout(function(){
+                $timeout(function() {
                     checkAllStatus()
 
-                        .then(function() {
+                        .then(function () {
                             $scope.app.processing = false;
                         })
-                        .catch(function() {
+                        .catch(function () {
                             $log.error("Error checking status");
                             $scope.app.processing = false;
                         })
@@ -74,12 +75,14 @@ app.controller("basicController", function ($scope, $rootScope, $log, $http, $in
     function appStart() {
         return $q(function(resolve, reject) {
 
-            var cmd = 'cd ' + $rootScope.project_path + '&& pm2 start '
+            var cmd = 'cd ' + $rootScope.project_path + ' && pm2 start '
                       + $rootScope.main_project_file;
 
             $log.info('Running: ' + cmd);
 
-            exec(cmd, function(error) {
+            //var proc = spawn('cd ', )
+
+            var child = exec(cmd, function(error) {
 
                 if (error) {
                     reject(error);
@@ -89,13 +92,13 @@ app.controller("basicController", function ($scope, $rootScope, $log, $http, $in
 
                     $log.info('Running: ' + cmd);
 
-                    exec(cmd, function(error, stdout) {
+                    exec(cmd, function(error) {
 
                         if (error) {
                             reject(error);
                         }
                         else {
-                            resolve(stdout);
+                            resolve();
                         }
                     });
                 }
@@ -200,16 +203,33 @@ app.controller("basicController", function ($scope, $rootScope, $log, $http, $in
         return $q.all([$scope.getPMStatus(), $scope.getAppStatus()]);
     }
 
+    if (!$rootScope.project_path) {  // check if project is installed
+        $scope.errMsg = "Oops! It looks like you don't have your project installed. "
+            + "Go to the Install page to clone your project."
+    }
+    else {
+        exec("pm2 -v", function (error) {  // check if PM2 is installed
 
-    checkAllStatus()
-        .then(function() {
-            $scope.ready = true;
+            if (error) {
+                $scope.errMsg = "Oops! It looks like you don't have PM2 installed. "
+                                + "Go to the Install page to install PM2.";
+            }
+            else {
+
+                // initial check of status
+                checkAllStatus()
+                    .then(function() {
+                        $scope.ready = true;
+                    });
+
+                // check statuses every 10 seconds
+                check = $interval(function() {
+                    checkAllStatus();
+                }, 10000);
+            }
+
         });
-
-    /* check statuses every 10 seconds */
-    check = $interval(function() {
-        checkAllStatus();
-    }, 10000);
+    }
 
 
     $scope.$on('$destroy', function() {

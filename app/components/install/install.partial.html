@@ -1,14 +1,14 @@
-<div class="container-fluid" ng-cloak ng-show="ready">
+<div class="container-fluid" ng-cloak ng-show="$root.configLoaded">
     <div class="row">
         <div class="col-md-12">
 
             <div class="col-md-3"></div>
 
-            <div class="col-md-6">
+            <div class="col-md-6" ng-show="ready">
 
                 <h1>Install</h1><br>
 
-                <button class="btn btn-default btn-lg" type="button" ng-click="installPm2()"
+                <button style="min-width:200px" class="btn btn-default btn-lg" type="button" ng-click="installPm2()"
                         ng-disabled="pm2.installing || pm2.installed">
                     Install PM2
                 </button>
@@ -19,7 +19,7 @@
 
                 <br><br>
 
-                <button class="btn btn-default btn-lg" type="button" ng-click="installProject()"
+                <button style="min-width:200px" class="btn btn-default btn-lg" type="button" ng-click="installProject()"
                         ng-disabled="project.installing || project.installed">
                     Clone {{$root.project_name}}
                 </button>
@@ -31,6 +31,30 @@
             </div>
 
             <div class="col-md-3"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid" ng-cloak ng-show="!$root.configLoaded">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+
+                <h1>Install</h1><br>
+
+                <h4>
+                    {{$root.configMsg}}&nbsp;&nbsp;&nbsp;
+                    <img ng-show="!$root.configErr" src="assets/img/spinner.gif">
+                </h4>
+
+            </div>
+
+            <div class="col-md-2"></div>
 
         </div>
     </div>

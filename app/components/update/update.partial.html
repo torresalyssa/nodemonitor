@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-cloak>
+<div class="container-fluid" ng-cloak ng-show="$root.configLoaded">
     <div class="row">
         <div class="col-md-12">
 
@@ -32,6 +32,29 @@
                     <p>{{bowerError}}</p>
                     <p>{{npmError}}</p>
                 </div>
+
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" ng-cloak ng-show="!$root.configLoaded">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+
+                <h1>Update</h1><br>
+
+                <h4>
+                    {{$root.configMsg}}&nbsp;&nbsp;&nbsp;
+                    <img ng-show="!$root.configErr" src="assets/img/spinner.gif">
+                </h4>
 
             </div>
 

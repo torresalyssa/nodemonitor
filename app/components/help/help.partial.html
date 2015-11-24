@@ -77,14 +77,16 @@
                 <tt>ping_endpt</tt>:&nbsp;&nbsp;Endpoint for your project. Used to ping and determine if the
                 project is running.<br>
 
-                <tt>project_name</tt>:&nbsp;&nbsp;The name of your project.<br>
+                <tt>project_name</tt>:&nbsp;&nbsp;The name of your project. Used only for UI purposes.<br>
 
                 <tt>pm2_endpt</tt>:&nbsp;&nbsp;Where PM2 is reporting its monitoring information to.<br>
 
-                <tt>project_path</tt>:&nbsp;&nbsp;Local path to your project.<br>
+                <tt>project_path</tt>:&nbsp;&nbsp;Local path to your project. If this is left blank/empty, then
+                it is assumed that there is no local install of the project and you will need to go to the Install
+                page to clone the project from the given <tt>git_repo</tt>.<br>
 
                 <tt>main_project_file</tt>:&nbsp;&nbsp;File to be started via <tt>pm2 start</tt> in order to
-                run your project. Must be located in the root project directory given by <tt>project_path</tt>.
+                run your project. Must be located in the root  of the project directory.
 
                 <tt>git_repo</tt>:&nbsp;&nbsp;The location of the git repository for this project. Used to install
                 the project if there is no local install, i.e. there is no <tt>project_path</tt>.
@@ -95,11 +97,11 @@
                 <h3>Troubleshooting</h3>
                 <p>
                     <b>Issue:</b>&nbsp;The watchdog is indicating that it is not running.<br>
-                    <b>Solution:</b>&nbsp;This could mean that you did not tell PM2 to start reporting data to the PM2
-                    endpoint. Do this by typing the command <tt>pm2 web</tt> into your terminal. Another reason the
-                    watchdog could not be running is that you have the wrong PM2 endpoint in your <tt>config.json</tt>
+                    <b>Solution:</b>&nbsp;This could mean that you have the wrong PM2 endpoint in your <tt>config.json</tt>
                     file. Check this by making sure that the port number output by PM2 when you run <tt>pm2 web</tt>
-                    matches that given in your <tt>config.json</tt> under <tt>pm2_endpt</tt>.
+                    matches that given in your <tt>config.json</tt> under <tt>pm2_endpt</tt>. Another reason this may
+                    occur is that you do not have PM2 installed. Check the Install page to see if you have PM2 installed,
+                    and if not click the button to install it.
                 </p>
                 <p>
                     <b>Issue:</b>&nbsp;The watchdog is indicating that it is running, but my app is indicating it is not.<br>
@@ -107,6 +109,12 @@
                     information on that app to the PM2 endpoint. To fix this, run <tt>pm2 kill</tt> in your
                     terminal, navigate to your project's main <tt>.js</tt> file, run <tt>pm2 start [main app file]</tt>, and
                     finally run <tt>pm2 web</tt> to have PM2 start reporting to the PM2 endpoint.
+                </p>
+                <p>
+                    <b>Issue:</b>&nbsp;It says "Error reading configuration file."<br>
+                    <b>Solution:</b>&nbsp;This usually means that you either do not have a config.json file located in
+                    the root of this app, or if you do that it is ill-formed or empty. To fix this, make sure you have a
+                    config.json file in the root directory of this app and that it has the format described above.
                 </p>
 
 

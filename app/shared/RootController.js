@@ -1,3 +1,3 @@
-app.controller("rootController", function ($scope, $log) {
+app.controller("rootController", function ($scope, $rootScope) {
 
 });

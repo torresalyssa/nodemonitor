@@ -1,4 +1,4 @@
-app.controller("installController", function ($scope, $rootScope, $log, $timeout, $q, fileDialog) {
+app.controller("installController", function ($scope, $rootScope, $log, $timeout, $q, $modal, fileDialog) {
 
     var slash = (process.platform === "win32") ? "\\" : "/";  // check if windows - windows will
                                                               // give 'win32' even if it is 64-bit
@@ -18,36 +18,65 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
     };
 
 
+    /* check if pm2 is installed */
     exec("pm2 -v", function (error) {
 
         if (error) {
             $scope.pm2.installed = false;
         }
-
         else {
             $scope.pm2.installed = true;
-            $scope.pm2.msg = "PM2 is installed!";
+            $scope.pm2.msg = "PM2 is already installed!";
+        }
+
+        /* check if the project is installed */
+        if (!$rootScope.project_path) {
+            $scope.project.installed = false;
+        }
+        else {
+            $scope.project.installed = true;
+            $scope.project.msg = $rootScope.project_name + " is already installed!";
         }
 
         $timeout(function() {
             $scope.ready = true;
         });
+
     });
 
 
+    // TODO: make this work with sudo
     $scope.installPm2 = function() {
 
         $log.info("installing pm2...");
 
         $scope.pm2.installing = true;
 
-        exec("npm install pm2 -g", function(error) {
+
+        var proc = exec('sudo npm install pm2 -g', function(error, stdout, stderr) {
+            $log.info("stdout: " + stdout);
+            $log.info("stderr: " + stderr);
 
             if (error) {
                 $scope.pm2.msg = "Error installing PM2. Check Help page.";
                 $log.error(error);
             }
+        });
 
+        var modal = $modal.open({
+            templateUrl: 'app/components/install/modal.html',
+            controller: 'modalController'
+        });
+
+        modal.result
+            .then(function(pwd) {
+                proc.stdin.write(pwd);
+            });
+
+        /*proc.on('close', function(code) {
+            if (!code) {
+                $scope.pm2.msg = "Error installing PM2. Check Help page.";
+            }
             else {
                 $log.info("pm2 installed!");
                 $scope.pm2.msg = "PM2 is installed!";
@@ -57,7 +86,9 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
             $timeout(function() {
                 $scope.pm2.installing = false;
             });
-        })
+        });*/
+
+
     };
 
 
@@ -66,7 +97,7 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
         return $q(function(res) {
             fileDialog.openDir(function(dir) {
                 for (var i = 0; i < dir.length; i++) {
-                    if (dir[i] == ' ') {   //TODO: check this on Windows
+                    if (dir[i] == ' ') {
                         dir = dir.slice(0, i) + "\\" + dir.slice(i);
                         i++;
                     }
@@ -80,6 +111,8 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
     $scope.installProject = function() {
 
         $log.info("cloning project at " + $rootScope.git_repo + "...");
+
+        $scope.project.msg = "";
 
         $scope.project.installing = true;
 
@@ -103,15 +136,18 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
 
                     else {
                         dir += dir.slice(-1) == slash ? '' : slash;
-                        //TODO: set this correctly
-                        $rootScope.project_path = dir;
 
-                        $log.info($rootScope.project_path);
+                        if ($rootScope.git_repo.slice(-1) == '/')
+                            $rootScope.git_repo = $rootScope.git_repo.slice(0, -1);
+
+                        $rootScope.project_path = dir +
+                            $rootScope.git_repo.slice($rootScope.git_repo.lastIndexOf("/") + 1,
+                                                      $rootScope.git_repo.lastIndexOf(".git")) + slash;
 
                         $timeout(function() {
                             $log.info("successfully cloned " + $rootScope.git_repo);
                             $scope.project.installing = false;
-                            $scope.project.msg = "Your project is installed!";
+                            $scope.project.msg = $rootScope.project_name + " is installed!";
                             $scope.project.installed = true;
                         });
                     }
