@@ -45,7 +45,6 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
     });
 
 
-    // TODO: make this work with sudo
     $scope.installPm2 = function() {
 
         $log.info("installing pm2...");
@@ -53,32 +52,14 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
         $scope.pm2.installing = true;
 
 
-        var proc = exec('sudo npm install pm2 -g', function(error, stdout, stderr) {
+        var child = exec('npm install pm2 -g', function(err, stdout, stderr) {
             $log.info("stdout: " + stdout);
             $log.info("stderr: " + stderr);
 
-            if (error) {
-                $scope.pm2.msg = "Error installing PM2. Check Help page.";
-                $log.error(error);
-            }
-        });
-
-        var modal = $modal.open({
-            templateUrl: 'app/components/install/modal.html',
-            controller: 'modalController'
-        });
-
-        modal.result
-            .then(function(pwd) {
-                proc.stdin.write(pwd);
-            });
-
-        /*proc.on('close', function(code) {
-            if (!code) {
+            if (err) {
                 $scope.pm2.msg = "Error installing PM2. Check Help page.";
             }
             else {
-                $log.info("pm2 installed!");
                 $scope.pm2.msg = "PM2 is installed!";
                 $scope.pm2.installed = true;
             }
@@ -86,8 +67,18 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
             $timeout(function() {
                 $scope.pm2.installing = false;
             });
-        });*/
+        });
 
+        /*var modal = $modal.open({
+            templateUrl: 'app/components/install/modal.html',
+            controller: 'modalController'
+        });
+
+        modal.result
+            .then(function(pwd) {
+                child.stdin.write(pwd );
+                child.stdin.end();
+            });*/
 
     };
 
