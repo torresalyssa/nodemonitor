@@ -6,25 +6,72 @@
 
             <div class="col-md-6" ng-show="ready">
 
-                <h1>Install</h1><br>
+                <h1>Install Dependencies</h1><br>
+
+                <button style="min-width:200px" class="btn btn-default btn-lg" type="button" ng-click="installNode()"
+                        ng-disabled="node.installed">
+                    Install Node.js
+                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="glyphicon" ng-show="node.msg"
+                   ng-class="{'glyphicon-ok':node.installed, 'glyphicon-remove': !node.installed}"></i>
+                &nbsp;&nbsp;&nbsp;
+                {{node.msg}}
+
+                <br><br>
+
+                <button style="min-width:200px" class="btn btn-default btn-lg" type="button" ng-click="installNpm()"
+                        ng-disabled="npm.installed || npm.installing || !node.installed">
+                    Install npm
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <img src="assets/img/spinner.gif" ng-show="npm.installing">
+                &nbsp;&nbsp;&nbsp;
+                <i class="glyphicon" ng-show="!npm.installing && npm.msg"
+                   ng-class="{'glyphicon-ok':npm.installed, 'glyphicon-remove': !npm.installed}"></i>
+                &nbsp;&nbsp;&nbsp;
+                {{npm.msg}}
+
+                <br><br>
+
+                <button style="min-width:200px" class="btn btn-default btn-lg" type="button" ng-click="installBower()"
+                        ng-disabled="bower.installed || bower.installing || !node.installed">
+                    Install Bower
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <img src="assets/img/spinner.gif" ng-show="bower.installing">
+                &nbsp;&nbsp;&nbsp;
+                <i class="glyphicon" ng-show="!bower.installing && bower.msg"
+                   ng-class="{'glyphicon-ok':bower.installed, 'glyphicon-remove': !bower.installed}"></i>
+                &nbsp;&nbsp;&nbsp;
+                {{bower.msg}}
+
+                <br><br>
 
                 <button style="min-width:200px" class="btn btn-default btn-lg" type="button" ng-click="installPm2()"
-                        ng-disabled="pm2.installing || pm2.installed">
+                        ng-disabled="pm2.installing || pm2.installed || !node.installed || !npm.installed">
                     Install PM2
                 </button>
                 &nbsp;&nbsp;&nbsp;
                 <img src="assets/img/spinner.gif" ng-show="pm2.installing">
+                &nbsp;&nbsp;&nbsp;
+                <i class="glyphicon" ng-show="!pm2.installing && pm2.msg"
+                   ng-class="{'glyphicon-ok':pm2.installed, 'glyphicon-remove': !pm2.installed}"></i>
                 &nbsp;&nbsp;&nbsp;
                 {{pm2.msg}}
 
                 <br><br>
 
                 <button style="min-width:200px" class="btn btn-default btn-lg" type="button" ng-click="installProject()"
-                        ng-disabled="project.installing || project.installed">
+                        ng-disabled="project.installing || project.installed || !node.installed
+                                     || !npm.installed || !bower.installed">
                     Clone {{$root.project_name}}
                 </button>
                 &nbsp;&nbsp;&nbsp;
                 <img src="assets/img/spinner.gif" ng-show="project.installing">
+                &nbsp;&nbsp;&nbsp;
+                <i class="glyphicon" ng-show="!project.installing && project.msg"
+                   ng-class="{'glyphicon-ok':project.installed, 'glyphicon-remove': !project.installed}"></i>
                 &nbsp;&nbsp;&nbsp;
                 {{project.msg}}
 

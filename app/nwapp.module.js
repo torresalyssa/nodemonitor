@@ -1,9 +1,8 @@
-var app = angular.module('nwApp', ['ngRoute', 'ui.bootstrap', 'chart.js', 'fileDialogService']);
+var app = angular.module('nwApp', ['ngRoute', 'ui.bootstrap', 'chart.js',
+                                   'fileDialogService', 'userdefaults.service',
+                                   'update.service']);
 
 app.run(function ($rootScope, $log) {
-
-    var slash = (process.platform === "win32") ? "\\" : "/";  // check if windows - windows will
-                                                              // give 'win32' even if it is 64-bit
 
     $rootScope.configLoaded = false;
     $rootScope.configErr = false;
@@ -23,7 +22,6 @@ app.run(function ($rootScope, $log) {
             $rootScope.project_name = obj.project_name;
             $rootScope.pm2_endpt = obj.pm2_endpt;
             $rootScope.project_path = obj.project_path;
-            $rootScope.project_path += $rootScope.project_path.slice(-1) == slash ? '' : slash;
             $rootScope.main_project_file = obj.main_project_file;
             $rootScope.git_repo = obj.git_repo;
 

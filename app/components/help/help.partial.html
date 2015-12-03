@@ -27,14 +27,15 @@
 
                 <h3>Install</h3>
                 <p>
-                    This will check whether or not you have PM2 (the tool used to report monitoring
-                    information on your project) installed. If it is not detected on your computer,
-                    a button will show up that you can click to install PM2, which is necessary for
-                    this app to be able to supply you with monitoring information. Additionally, this page will offer to
+                    This will check whether or not you have PM2 (the tool used to report monitoring information on your
+                    project), your project, Node.js, npm, and bower installed. If any of these are not detected, you
+                    will need to click the corresponding button(s) to install them. This page will offer to
                     install your project from the <tt>git_repo</tt> listed in your <tt>config.json</tt> file if there is
                     no local install. <br>
-                    If you get an error message while trying to install PM2, make sure that you have
-                    admin privileges.
+                    If you get an error message while trying to install, make sure that you have
+                    admin privileges.<br>
+                    Make sure there is a check mark next to each dependency before proceeding with the use
+                    if this app. If all are not installed, some functionality will be lost.
                 </p>
 
                 <br>
@@ -82,7 +83,7 @@
 
                 <tt>pm2_endpt</tt>:&nbsp;&nbsp;Where PM2 is reporting its monitoring information to.<br>
 
-                <tt>project_path</tt>:&nbsp;&nbsp;Local path to your project. If this is left blank/empty, then
+                <tt>project_path</tt>:&nbsp;&nbsp;Absolute path to your project. If this is left blank/empty, then
                 it is assumed that there is no local install of the project and you will need to go to the Install
                 page to clone the project from the given <tt>git_repo</tt>.<br>
 
@@ -97,10 +98,16 @@
 
                 <h3>Troubleshooting</h3>
                 <p>
+                    <b>Issue:</b>&nbsp;I got an error when trying to install PM2/Node.js/Bower<br>
+                    <b>Solution:</b>&nbsp;This most likely means that you are not running with administrative privileges.
+                    Make sure you are logged in to your computer as an administrator and try again. If that still does not
+                    work, make sure that you are connected to the internet.
+                </p>
+                <p>
                     <b>Issue:</b>&nbsp;The watchdog is indicating that it is not running.<br>
                     <b>Solution:</b>&nbsp;This could mean that you have the wrong PM2 endpoint in your <tt>config.json</tt>
                     file. Check this by making sure that the port number output by PM2 when you run <tt>pm2 web</tt>
-                    matches that given in your <tt>config.json</tt> under <tt>pm2_endpt</tt>. Another reason this may
+                    in the terminal matches that given in your <tt>config.json</tt> under <tt>pm2_endpt</tt>. Another reason this may
                     occur is that you do not have PM2 installed. Check the Install page to see if you have PM2 installed,
                     and if not click the button to install it.
                 </p>
@@ -117,6 +124,27 @@
                     the root of this app, or if you do that it is ill-formed or empty. To fix this, make sure you have a
                     config.json file in the root directory of this app and that it has the format described above.
                 </p>
+                <p>
+                    <b>Issue:</b>&nbsp;I got an error checking for updates.<br>
+                    <b>Solution:</b>&nbsp;This most likely means that the project indicated by your <tt>project_path</tt>
+                    does not have a git repository. Make sure that your project has a git repository and that the
+                    <tt>project_path</tt> (visible from the App Configuration page) is correct.
+                </p>
+                <p>
+                    <b>Issue:</b>&nbsp;I got an error updating.<br>
+                    <b>Solution:</b>&nbsp;One reason this could happen is if the <tt>project_path</tt> is not an absolute
+                    path to your project. Make sure the project path is NOT a relative path by looking at the Configuration
+                    page. An error while updating could also mean that you do not have Bower and/or npm installed. Check
+                    the install page to verify they are installed and install if they are not.
+                </p>
+                <p>
+                    <b>Issue:</b>&nbsp;An install button is disabled.<br>
+                    <b>Solution:</b>&nbsp;First, refresh the page. Any buttons that are disabled without a check mark and
+                    a message next to them saying they are already installed are dependencies that cannot be installed
+                    until some other dependency is installed. Make sure that you click on the non-disabled buttons to
+                    install those dependencies first, and once that is done you will be able to install the others.
+                </p>
+
 
 
                 <br><br><br>

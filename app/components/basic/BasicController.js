@@ -75,7 +75,7 @@ app.controller("basicController", function ($scope, $rootScope, $log, $http, $in
     function appStart() {
         return $q(function(resolve, reject) {
 
-            var cmd = 'cd ' + $rootScope.project_path + ' && pm2 start '
+            var cmd = "cd \"" + $rootScope.project_path + "\" && pm2 start "
                       + $rootScope.main_project_file;
 
             $log.info('Running: ' + cmd);
