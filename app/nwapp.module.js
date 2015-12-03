@@ -2,7 +2,7 @@ var app = angular.module('nwApp', ['ngRoute', 'ui.bootstrap', 'chart.js',
                                    'fileDialogService', 'userdefaults.service',
                                    'update.service']);
 
-app.run(function ($rootScope, $log) {
+app.run(function ($rootScope, $log, userDefaults) {
 
     $rootScope.configLoaded = false;
     $rootScope.configErr = false;
@@ -21,7 +21,8 @@ app.run(function ($rootScope, $log) {
             $rootScope.ping_endpt = obj.ping_endpt;
             $rootScope.project_name = obj.project_name;
             $rootScope.pm2_endpt = obj.pm2_endpt;
-            $rootScope.project_path = obj.project_path;
+            $rootScope.project_path = obj.project_path ? obj.project_path
+                                      : userDefaults.getStringForKey("project_path", "");
             $rootScope.main_project_file = obj.main_project_file;
             $rootScope.git_repo = obj.git_repo;
 

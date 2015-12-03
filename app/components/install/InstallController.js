@@ -97,11 +97,32 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
     };
 
     $scope.installNpm = function() {
-
+        $window.open("https://nodejs.org");
     };
 
 
     $scope.installBower = function() {
+        $log.info("installing bower...");
+
+        $scope.bower.installing = true;
+
+
+        var child = exec('npm install bower -g', function(err, stdout, stderr) {
+            $log.info("stdout: " + stdout);
+            $log.info("stderr: " + stderr);
+
+            if (err) {
+                $scope.bower.msg = "Error installing Bower. Check Help page.";
+            }
+            else {
+                $scope.bower.msg = "Bower is installed!";
+                $scope.bower.installed = true;
+            }
+
+            $timeout(function() {
+                $scope.bower.installing = false;
+            });
+        });
 
     };
 
@@ -181,13 +202,8 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
             else {
                 dir += dir.slice(-1) == slash ? '' : slash;
 
-                $log.info(dir);
-                $log.info($rootScope.git_repo);
-
                 if ($rootScope.git_repo.slice(-1) == '/')
                     $rootScope.git_repo = $rootScope.git_repo.slice(0, -1);
-
-                $log.info($rootScope.git_repo);
 
                 $rootScope.project_path = dir +
                     $rootScope.git_repo.slice($rootScope.git_repo.lastIndexOf("/") + 1,
@@ -195,13 +211,19 @@ app.controller("installController", function ($scope, $rootScope, $log, $timeout
 
                 updateService.bowerAndNpmUpdate($rootScope.project_path)
                     .then(function() {
-                        $timeout(function() {
-                            $log.info("successfully cloned " + $rootScope.git_repo);
-                            $scope.project.installing = false;
-                            $scope.project.msg = $rootScope.project_name + " is installed!";
-                            $scope.project.installed = true;
+
+                        exec("pm2 kill", function() {
+                            userDefaults.setStringForKey("project_path", $rootScope.project_path);
+                            $timeout(function() {
+                                $log.info("successfully cloned " + $rootScope.git_repo);
+                                $scope.project.installing = false;
+                                $scope.project.msg = $rootScope.project_name + " is installed!";
+                                $scope.project.installed = true;
+                            });
                         });
+
                     }, function(err) {
+                        $rootScope.project_path = null;
                         $timeout(function() {
                             $log.error("Error doing npm/bower updates: " + err);
                             $scope.project.installing = false;

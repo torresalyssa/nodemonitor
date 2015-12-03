@@ -26,6 +26,11 @@ app.config(function ($routeProvider) {
             controller: 'installController'
         })
 
+        .when('/config', {
+            templateUrl: 'app/components/config/config.partial.html',
+            controller: 'configController'
+        })
+
         .otherwise('/basic');
 
 });

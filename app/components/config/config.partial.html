@@ -1,0 +1,47 @@
+<div class="container-fluid" ng-cloak ng-show="$root.configLoaded">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-3"></div>
+
+            <div class="col-md-6" ng-show="ready">
+
+                <h1>Configuration</h1><br>
+
+                <p><b><tt>ping_endpt</tt></b>:&nbsp;&nbsp;{{$root.ping_endpt}}</p>
+                <p><b><tt>pm2_endpt</tt></b>:&nbsp;&nbsp;{{$root.pm2_endpt}}<br></p>
+                <p><b><tt>project_name</tt></b>:&nbsp;&nbsp;{{$root.project_name}}<br></p>
+                <p><b><tt>project_path</tt></b>:&nbsp;&nbsp;{{$root.project_path}}<br></p>
+                <p><b><tt>main_project_file</tt></b>:&nbsp;&nbsp;{{$root.main_project_file}}<br></p>
+                <p><b><tt>git_repo</tt></b>:&nbsp;&nbsp;{{$root.git_repo}}<br></p>
+
+            </div>
+
+            <div class="col-md-3"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid" ng-cloak ng-show="!$root.configLoaded">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+
+                <h1>Basic Dashboard</h1><br>
+
+                <h4>
+                    {{$root.configMsg}}&nbsp;&nbsp;&nbsp;
+                    <img ng-show="!$root.configErr" src="assets/img/spinner.gif">
+                </h4>
+
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+    </div>
