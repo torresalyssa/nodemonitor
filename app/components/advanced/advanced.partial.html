@@ -6,47 +6,99 @@
 
             <div class="col-md-6" ng-show="ready">
 
-                <h1>Basic Dashboard</h1><br>
-
-                <div style="margin-bottom: 10px;" ng-repeat="proc in procs">
-                    <span class="align-left">
-                        <i class="glyphicon"
-                            ng-class="{'glyphicon-ok-circle':proc.pid, 'glyphicon-remove-circle':!proc.pid}"></i>
-
-                        <h2 style="display:inline">&nbsp;&nbsp;{{proc.name}}&nbsp;&nbsp;&nbsp;</h2>
-                    </span>
-                    <!--<span class="align-right">
-                        <span ng-show="!app.processing">
-                            <i class="glyphicon glyphicon-play action-icon" ng-click="appStart()"
-                                ng-show="!app.running"></i>&nbsp;
-                            <i class="glyphicon glyphicon-ban-circle action-icon" ng-click="appStop()"
-                                ng-show="app.running"></i>&nbsp;
-                            <i class="glyphicon glyphicon-refresh action-icon" ng-click="appRestart()"
-                                ng-show="app.running"></i>&nbsp;
-                        </span>
-
-                    <img style="position:relative; top:-5px; left: -5px;" height="20" width="20"
-                         ng-show="app.processing" src="assets/img/spinner.gif">
-                    </span>-->
-                    <br><br>
-                    <span ng-show="proc.pid" style="color:darkgrey">
-                        CPU: {{proc.monit.cpu}}<br>
-                        Memory used: {{proc.monit.memory/data.monit.total_mem * 100 | number:1}}%<br>
-                </span>
-                </div>
-
-                <br><br>
+                <h1>Advanced Dashboard</h1><br>
 
                 <i class="glyphicon"
                    ng-class="{'glyphicon-ok-circle':pm2.running, 'glyphicon-remove-circle':!pm2.running}"></i>
 
-                <h2 style="display:inline">&nbsp;&nbsp;{{app.name}}&nbsp;Watchdog&nbsp;&nbsp;&nbsp;</h2>
+                <h2 style="display:inline">
+                    &nbsp;&nbsp;PM2&nbsp;{{pm2.running ? "is monitoring." : "is not monitoring."}}
+                </h2>
+
+                <span class="align-right">
+                    <i class="glyphicon glyphicon-play action-icon" ng-click="pm2Start()"
+                       ng-show="!pm2.running && !pm2.processing"></i>
+
+                    <img style="position:relative; top:-5px; left: -5px;" height="20" width="20"
+                        ng-show="pm2.processing" src="assets/img/spinner.gif">
+                </span>
+
+                <br><br>
+
+                <span class="align-left">
+                    <i class="glyphicon"
+                       ng-class="{'glyphicon-ok-circle':app.running, 'glyphicon-remove-circle':!app.running}"></i>
+
+                    <h2 style="display:inline">
+                        &nbsp;&nbsp;{{app.name}}&nbsp;{{app.running ? "is up." : "is not up."}}
+                    </h2>
+                </span>
+                <span class="align-right">
+                    <span ng-show="!app.processing">
+                        <i class="glyphicon glyphicon-play action-icon" ng-click="appStart()"
+                           ng-show="!app.running"></i>
+                    </span>
+
+                    <img style="position:relative; top:-5px; left: -5px;" height="20" width="20"
+                         ng-show="app.processing" src="assets/img/spinner.gif">
+                </span>
+                <br><br><br><br>
+
+                <div style="margin-bottom: 10px;" ng-repeat="proc in procs">
+                    <span class="align-left">
+                        <i class="glyphicon"
+                            ng-class="{'glyphicon-ok-circle':proc.pm2_env.status != 'stopped',
+                            'glyphicon-remove-circle':proc.pm2_env.status == 'stopped'}"></i>
+
+                        <h2 style="display:inline; cursor:pointer" ng-click="open(proc)">
+                            &nbsp;&nbsp;{{proc.name}}&nbsp;&nbsp;&nbsp;
+                        </h2>
+                    </span>
+                    <span class="align-right">
+                        <span ng-show="!proc.processing">
+                            <i class="glyphicon glyphicon-play action-icon" ng-click="start(proc)"
+                               ng-show="proc.pm2_env.status == 'stopped'"></i>
+
+                            <i class="glyphicon glyphicon-refresh action-icon" ng-click="restart(proc)"
+                                ng-show="proc.pm2_env.status != 'stopped'"></i>
+
+                            <i class="glyphicon glyphicon-ban-circle action-icon" ng-click="stop(proc)"
+                               ng-show="proc.pm2_env.status != 'stopped'"></i>
+
+                            <i class="glyphicon glyphicon-trash action-icon" ng-click="delete(proc)"
+                               ></i>&nbsp;
+                        </span>
+
+                        <img style="position:relative; top:-5px; left: -5px;" height="20" width="20"
+                             ng-show="proc.processing" src="assets/img/spinner.gif">
+                    </span>
+                    <br><br>
+                    <span class="align-left">
+                        <span style="color:darkgrey;">
+                            ...{{proc.pm2_env.pm_exec_path | limitTo: -50}}
+                        </span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="color: indianred;">
+                            {{proc.monit.memory / 1000000 | number:0}}MB
+                        </span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="color: orange;">
+                            {{proc.pm2_env.restart_time}} restarts
+                        </span>
+                    </span>
+                    <span style="float:right; padding-right:12px">
+                    </span>
+                    <br>
+                    <hr>
+                </div>
+
+                <br><br>
 
             </div>
 
             <div class="col-md-6" ng-show="!ready">
 
-                <h1>Basic Dashboard</h1><br>
+                <h1>Advanced Dashboard</h1><br>
 
                 <h3>{{errMsg}}</h3>
 

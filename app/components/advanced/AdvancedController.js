@@ -1,4 +1,8 @@
-app.controller("advancedController", function ($scope, $rootScope, $log, $http, $interval, $q, $timeout) {
+app.controller("advancedController", function ($scope, $rootScope, $log, $http, $interval,
+                                               $q, $timeout, $modal) {
+
+    var check = undefined;
+    var checkFrequency = 5000;
 
     $scope.ready = false;
     $scope.errMsg = "";
@@ -10,12 +14,11 @@ app.controller("advancedController", function ($scope, $rootScope, $log, $http, 
     };
 
     $scope.pm2 = {
-        "running": false
+        "running": false,
+        "processing": false
     };
 
     $scope.procs = [];
-
-    var check = undefined;
 
     $scope.data = undefined;
 
@@ -27,11 +30,14 @@ app.controller("advancedController", function ($scope, $rootScope, $log, $http, 
                 $scope.pm2.running = true;
                 $scope.data = data.data;
                 $scope.procs = data.data.processes;
+                $scope.$broadcast("PM2_RUNNING");
             })
 
             .catch(function(err) {
                 $log.error("Unable to get monitoring info: " + err);
                 $scope.pm2.running = false;
+                $scope.data = undefined;
+                $scope.procs = [];
             });
     };
 
@@ -42,6 +48,7 @@ app.controller("advancedController", function ($scope, $rootScope, $log, $http, 
             .then(function(data) {
                 $scope.app.running = true;
                 $log.info(data);
+                $scope.$broadcast("APP_RUNNING");
             })
 
             .catch(function() {
@@ -50,161 +57,126 @@ app.controller("advancedController", function ($scope, $rootScope, $log, $http, 
     };
 
 
+    $scope.$on("PM2_RUNNING", function() {
+        $scope.pm2.processing = false;
+    });
+
+    $scope.$on("APP_RUNNING", function() {
+        $scope.app.processing = false;
+    });
+
+    $scope.$on("PROC_RUNNING", function(event, args) {
+
+    });
+
+
+    $scope.pm2Start = function() {
+        $scope.pm2.processing = true;
+
+        $log.info('Running: pm2 web');
+
+        exec('pm2 web', function(error) {
+
+            if (error)
+                $log.error("Exec error in pm2 web: " + error);
+            else
+                checkAllStatus();
+        });
+    };
+
+
     $scope.appStart = function() {
         $scope.app.processing = true;
 
-        appStart()
+        var cmd = "cd \"" + $rootScope.project_path + "\" && pm2 start "
+            + $rootScope.main_project_file;
 
-            .then(function() {
-                /* put in timeout to allow for pm2 to restart, is there a better way? */
+        exec(cmd, function(error) {
+
+            if (error)
+                $log.error("Error in appStart: " + error);
+            else
+                checkAllStatus();
+        });
+    };
+
+
+    function runProcCmd(proc, c, delay) {
+        var cmd = c + " " + proc.name;
+
+        stopCheck();
+        proc.processing = true;
+
+        $log.info("Running: " + cmd);
+        exec(cmd, function(error) {
+
+            if (error) {
+                $log.error("Exec error: " + error);
+                proc.processing = false;
+            }
+
+            else {
                 $timeout(function() {
                     checkAllStatus()
-
                         .then(function () {
-                            $scope.app.processing = false;
+                            proc.processing = false;
+                            startCheck();
                         })
                         .catch(function () {
                             $log.error("Error checking status");
-                            $scope.app.processing = false;
+                            proc.processing = false;
+                            startCheck();
                         })
-                }, 2000);
-            })
-            .catch(function(err) {
-                $log.error('Exec error in appStart: ' + err);
-                $scope.app.processing = false;
-            })
-    };
-
-    function appStart() {
-        return $q(function(resolve, reject) {
-
-            var cmd = "cd \"" + $rootScope.project_path + "\" && pm2 start "
-                + $rootScope.main_project_file;
-
-            $log.info('Running: ' + cmd);
-
-            //var proc = spawn('cd ', )
-
-            var child = exec(cmd, function(error) {
-
-                if (error) {
-                    reject(error);
-                }
-                else {
-                    cmd = 'pm2 web';
-
-                    $log.info('Running: ' + cmd);
-
-                    exec(cmd, function(error) {
-
-                        if (error) {
-                            reject(error);
-                        }
-                        else {
-                            resolve();
-                        }
-                    });
-                }
-            });
+                }, delay);
+            }
         })
     }
 
-    $scope.appStop = function() {
-        $scope.app.processing = true;
 
-        appStop()
-
-            .then(function() {
-
-                checkAllStatus()
-
-                    .then(function() {
-                        $scope.app.processing = false;
-                    })
-                    .catch(function() {
-                        $log.error("Error checking status");
-                        $scope.app.processing = false;
-                    })
-            })
-            .catch(function(err) {
-                $log.error('Exec error in appStop: ' + err);
-                $scope.app.processing = false;
-            })
+    $scope.start = function(proc) {
+        runProcCmd(proc, "pm2 start", 1000);
     };
 
-    function appStop() {
-
-        return $q(function(resolve, reject) {
-
-            var cmd = 'pm2 stop all';
-
-            $log.info('Running: ' + cmd);
-
-            exec(cmd, function(error, stdout) {
-
-                if (error) {
-                    reject(error);
-                }
-
-                else {
-                    checkAllStatus()
-                        .then(function() {
-                            resolve(stdout);
-                        })
-                }
-            });
-        })
-    }
-
-    $scope.appRestart = function() {
-        $scope.app.processing = true;
-
-        appRestart()
-
-            .then(function() {
-                /* put in timeout to allow for pm2 to restart, is there a better way? */
-                $timeout(function(){
-                    checkAllStatus()
-
-                        .then(function() {
-                            $scope.app.processing = false;
-                        })
-                        .catch(function() {
-                            $log.error("Error checking status");
-                            $scope.app.processing = false;
-                        })
-                }, 2000);
-            })
-            .catch(function(err) {
-                $log.error('Exec error in appRestart: ' + err);
-                $scope.app.processing = false;
-            })
+    $scope.stop = function(proc) {
+        runProcCmd(proc, "pm2 stop", 0);
     };
 
-    function appRestart() {
+    $scope.restart = function(proc) {
+        runProcCmd(proc, "pm2 restart", 5000);
+    };
 
-        return $q(function(resolve, reject) {
 
-            var cmd = 'pm2 restart all';
+    $scope.delete = function(proc) {
+        runProcCmd(proc, "pm2 delete");
+    };
 
-            $log.info('Running: ' + cmd);
-
-            exec(cmd, function(error, stdout) {
-
-                if (error) {
-                    reject(error);
-                }
-
-                else {
-                    resolve(stdout);
-                }
-            });
-        })
-    }
 
     function checkAllStatus() {
         return $q.all([$scope.getPMStatus(), $scope.getAppStatus()]);
     }
+
+    function stopCheck() {
+        if (check)
+            $interval.cancel(check);
+    }
+
+    function startCheck() {
+        check = $interval(function() {
+            checkAllStatus();
+        }, checkFrequency);
+    }
+
+    $scope.open = function(proc) {
+        $scope.curProc = proc;
+
+        var modal = $modal.open({
+            templateUrl: 'app/components/advanced/modal.html',
+            size: 'lg',
+            controller: "advModalController",
+            scope: $scope
+        });
+
+    };
 
     if (!$rootScope.project_path) {  // check if project is installed
         $scope.errMsg = "Oops! It looks like you don't have your project installed. "
@@ -218,25 +190,17 @@ app.controller("advancedController", function ($scope, $rootScope, $log, $http, 
                     + "Go to the Install page to install PM2.";
             }
             else {
-
-                // initial check of status
                 checkAllStatus()
                     .then(function() {
                         $scope.ready = true;
                     });
-
-                // check statuses every 10 seconds
-                check = $interval(function() {
-                    checkAllStatus();
-                }, 10000);
+                startCheck();
             }
 
         });
     }
 
-
     $scope.$on('$destroy', function() {
-        if (check)
-            $interval.cancel(check);
+        stopCheck();
     })
 });

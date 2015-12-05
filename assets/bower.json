@@ -17,7 +17,7 @@
     "angular-route": "~1.4.6",
     "lodash": "~3.10.1",
     "bootstrap": "~3.3.5",
-    "ui-bootstrap": "~0.13.4",
+    "ui-bootstrap": "~0.14.3",
     "angular-bootstrap": "~0.13.4",
     "angular-chart.js": "~0.8.5",
     "Chart.js": "~1.0.2"

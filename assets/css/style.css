@@ -41,6 +41,10 @@ p {
 }
 .align-right {
     float: right;
-    padding-right: 160px;
-    padding-top: 12px;
+    padding-top: 10px;
+    padding-right: 5px;
+}
+
+.info-text {
+    color: darkgrey;
 }

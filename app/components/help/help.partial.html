@@ -24,6 +24,9 @@
                 <i class="glyphicon glyphicon-refresh action-icon"></i>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 Click to restart<br><br>
+                <i class="glyphicon glyphicon-trash action-icon"></i>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Click to delete<br><br>
 
                 <h3>Install</h3>
                 <p>
@@ -52,9 +55,9 @@
                     corresponding to those actions.
                 </p>
                 <p>
-                    The second item listed on the basic dashboard represents the watchdog (PM2) that is monitoring your
-                    app. The icon to the left indicates whether or not the watchdog is active (whether or not PM2 is
-                    reporting monitoring information to the PM2 endpoint given in the <tt>config.json</tt> file).
+                    The second item listed on the basic dashboard represents the monitoring process (PM2) that is monitoring your
+                    app. The icon to the left indicates whether or not PM2 is reporting monitoring information to the
+                    PM2 endpoint given in the <tt>config.json</tt> file).
                 </p>
 
                 <br>
@@ -62,8 +65,19 @@
                 <h3>Advanced Dashboard</h3>
                 <p>
                     The advanced dashboard allows you to view more detailed information on the status of your app,
-                    including a list of all running processes, the ability to start/stop/reset any process, and CPU
-                    and memory usage information.
+                    including a list of all running processes, the ability to start/stop/reset/delete any process,
+                    and CPU and memory usage information.
+                </p>
+                <p>
+                    The first two listings on the Advanced Dashboard indicate whether or not PM2 and the project are
+                    running. PM2's status is checked by attempting to get monitoring information from the
+                    <tt>pm2_endpt</tt>, and the project's status is checked by pinging the <tt>ping_endpt</tt>. If
+                    either are not running, a start button will appear next to them so you can try to start them back
+                    up.
+                </p>
+                <p>
+                    The next listings are the processes you currently have running. You can start, stop, refresh, or
+                    delete any of them.
                 </p>
 
                 <br>
@@ -108,7 +122,7 @@
                     work, make sure that you are connected to the internet.
                 </p>
                 <p>
-                    <b>Issue:</b>&nbsp;The watchdog is indicating that it is not running.<br>
+                    <b>Issue:</b>&nbsp;The monitor is indicating that it is not running.<br>
                     <b>Solution:</b>&nbsp;This could mean that you have the wrong PM2 endpoint in your <tt>config.json</tt>
                     file. Check this by making sure that the port number output by PM2 when you run <tt>pm2 web</tt>
                     in the terminal matches that given in your <tt>config.json</tt> under <tt>pm2_endpt</tt>. Another reason this may
