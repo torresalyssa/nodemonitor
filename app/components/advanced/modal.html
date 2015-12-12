@@ -5,7 +5,29 @@
     </span>
     <br>
 </div>
-<div class="modal-body">
 
+<div class="modal-body">
+    <tabset>
+        <tab heading="JSON">
+            <pre ng-bind-html="curProc | prettify"></pre>
+        </tab>
+        <tab heading="Log">
+            <div style="background-color: white">
+                <span ng-repeat="outLine in outLogs track by $index">
+                    <tt>
+                        <b style="color:green">[out]&nbsp;&nbsp;&nbsp;</b>
+                        <span style="color:black">{{outLine}}</span>
+                    </tt><br>
+                </span>
+                <span ng-repeat="errLine in errLogs track by $index">
+                    <tt>
+                        <b style="color:red">[err]&nbsp;&nbsp;&nbsp;</b>
+                        <span style="color:black">{{errLine}}</span>
+                    </tt><br>
+                </span>
+            </div>
+        </tab>
+    </tabset>
 </div>
+
 <div class="modal-footer"></div>

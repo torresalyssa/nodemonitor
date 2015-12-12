@@ -2,7 +2,7 @@
   "ping_endpt": "http://localhost:8000/ping",
   "project_name": "SSTUBBY",
   "pm2_endpt": "http://localhost:9615",
-
+  "project_path": "/Users/atorres/Documents/sstubby",
   "main_project_file": "server.js",
   "git_repo": "https://github.com/scottmatheson/sstubby.git"
 }

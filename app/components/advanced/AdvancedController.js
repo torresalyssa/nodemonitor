@@ -161,9 +161,7 @@ app.controller("advancedController", function ($scope, $rootScope, $log, $http, 
     }
 
     function startCheck() {
-        check = $interval(function() {
-            checkAllStatus();
-        }, checkFrequency);
+        check = $interval(checkAllStatus, checkFrequency);
     }
 
     $scope.open = function(proc) {
