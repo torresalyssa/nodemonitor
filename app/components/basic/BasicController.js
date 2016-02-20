@@ -208,9 +208,10 @@ app.controller("basicController", function ($scope, $rootScope, $log, $http, $in
             + "Go to the Install page to clone your project."
     }
     else {
-        exec("pm2 -v", function (error) {  // check if PM2 is installed
+        exec("/usr/local/bin/pm2 -v", function (error) {  // check if PM2 is installed
 
             if (error) {
+                $log.info(error);
                 $scope.errMsg = "Oops! It looks like you don't have PM2 installed. "
                                 + "Go to the Install page to install PM2.";
             }

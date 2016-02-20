@@ -18,3 +18,6 @@ NW.js app that uses PM2 to monitor the status of an app.
 - Once you have started the apps and want to keep them on server reboot, do `pm2 save`.
  
 - Now, PM2 should launch your apps automatically on reboot!
+
+## Notes
+- Node, Bower, and PM2 need to be installed in order for this app to work.
